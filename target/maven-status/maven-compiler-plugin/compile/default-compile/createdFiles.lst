@@ -1,0 +1,8 @@
+com\arison\app\web\IndexController.class
+com\arison\app\web\WeiXinPushController.class
+com\arison\app\core\Result.class
+com\arison\app\core\ResultGenerator.class
+com\arison\app\ChapterApplication$1.class
+com\arison\app\config\WebMvcConfigurer.class
+com\arison\app\core\ResultCode.class
+com\arison\app\ChapterApplication.class
