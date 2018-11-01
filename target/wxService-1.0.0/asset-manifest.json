@@ -1,7 +1,7 @@
 {
-  "main.css": "/wxService/static/css/main.24205ca0.chunk.css",
-  "main.js": "/wxService/static/js/main.9c87ee2a.chunk.js",
-  "main.js.map": "/wxService/static/js/main.9c87ee2a.chunk.js.map",
+  "main.css": "/wxService/static/css/main.ca6f9979.chunk.css",
+  "main.js": "/wxService/static/js/main.da8cf661.chunk.js",
+  "main.js.map": "/wxService/static/js/main.da8cf661.chunk.js.map",
   "static/css/1.cce1aab3.chunk.css": "/wxService/static/css/1.cce1aab3.chunk.css",
   "static/js/1.32264975.chunk.js": "/wxService/static/js/1.32264975.chunk.js",
   "static/js/1.32264975.chunk.js.map": "/wxService/static/js/1.32264975.chunk.js.map",
@@ -10,9 +10,9 @@
   "static/media/index.css": "/wxService/static/media/outline-icons.cd6c777f.woff2",
   "static/media/bindPhone.css": "/wxService/static/media/bg_bind_phone.ddff5923.jpg",
   "static/media/ic_uas_icon.png": "/wxService/static/media/ic_uas_icon.5f85a40d.png",
-  "static/css/main.24205ca0.chunk.css.map": "/wxService/static/css/main.24205ca0.chunk.css.map",
+  "static/css/main.ca6f9979.chunk.css.map": "/wxService/static/css/main.ca6f9979.chunk.css.map",
   "static/css/1.cce1aab3.chunk.css.map": "/wxService/static/css/1.cce1aab3.chunk.css.map",
   "index.html": "/wxService/index.html",
-  "precache-manifest.29eeab5838ed130a9f84a2e56cbfd81a.js": "/wxService/precache-manifest.29eeab5838ed130a9f84a2e56cbfd81a.js",
+  "precache-manifest.ceb70cfc2ca0eb818b0244718bfb9eb2.js": "/wxService/precache-manifest.ceb70cfc2ca0eb818b0244718bfb9eb2.js",
   "service-worker.js": "/wxService/service-worker.js"
 }
