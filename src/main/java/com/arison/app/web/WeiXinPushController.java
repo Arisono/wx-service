@@ -100,56 +100,102 @@ public class WeiXinPushController {
 	}
 	
 	
-//	    "phone":"13510107574",
-//	    "password":"a1111111",
-//	    "master":"UAS",
-//	    "nodeId":59180421,
-//	    "baseUrl":"http://192.168.253.58:8080/ERP/ 
-
+	
+	/**
+	 * phone：推送人手机号
+	 * url: URL链接为空,不进入详情页面，进入详情页面参数说明请看下文说明
+	 * fieldMap:微信模板显示的字段值
+	 * urlParam:url链接参数（hashMap的json格式）
+	 * pushType:uas系统单据推送类型（区分审批流程，订阅和消息提醒）【process/message/subscribe】
+	 * @param 
+	 * @return
+	 */
 	@RequestMapping(value="/wxPush" ,produces = "application/json; charset=utf-8")
 	public Result wxPush(HttpServletRequest request){
+		String doc="https://www.jianshu.com/p/14a460c7287f";//接口查阅文档
 	    String phone=request.getParameter("phone");//必填
-		if (StringUtils.isEmpty(phone)) {
-			return ResultGenerator.genFailResult("缺少参数：phone")
-					.setData("请查阅接口文档！")
+	    String pushType=request.getParameter("pushType");//必填
+	    String fieldMap=request.getParameter("fieldMap");//必填
+		String url=request.getParameter("url");//非必填
+		String urlParam=request.getParameter("urlParam");//非必填
+	    if (StringUtils.isEmpty(pushType)) {
+	    	return ResultGenerator.genFailResult("缺少参数：pushType")
+					.setData("请查阅接口文档！"+doc)
 					.setCode(ResultCode.INTERNAL_SERVER_ERROR);
 		}
+		if (StringUtils.isEmpty(phone)) {
+			return ResultGenerator.genFailResult("缺少参数：phone")
+					.setData("请查阅接口文档！"+doc)
+					.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+		}
+		if (StringUtils.isEmpty(fieldMap)) {
+			return ResultGenerator.genFailResult("缺少参数：fieldMap")
+					.setData("请查阅接口文档！"+doc)
+					.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+		}
+		if (StringUtils.isEmpty(url)) {
+			return ResultGenerator.genFailResult("缺少参数：url")
+					.setData("请查阅接口文档！"+doc)
+					.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+		}
+		if(StringUtils.isEmpty(urlParam)){
+			return ResultGenerator.genFailResult("缺少参数：urlParam")
+					.setData("请查阅接口文档！"+doc)
+					.setCode(ResultCode.INTERNAL_SERVER_ERROR);
+		}
+		
 		HttpRequest eRequest=  HttpRequest.get("https://mobile.ubtob.com/user/appGetOpenid").form("telephone", phone);
 		String hresult= eRequest.body();
 		String openid=JSON.parseObject(hresult).getString("openid");
 		if ("0".equals(openid)) {
-			return ResultGenerator.genFailResult("该用户未进行微信公众登录绑定").setData(hresult);
+			return ResultGenerator.genFailResult("该用户未进行微信公众登录绑定")
+					.setData(hresult)
+					.setCode(ResultCode.INTERNAL_SERVER_ERROR);
 		}
-		String fieldMap=request.getParameter("fieldMap");
-		String url=request.getParameter("url");
-		String urlParam=request.getParameter("urlParam");//必填
-		if (StringUtils.isEmpty(fieldMap)) {
-			return ResultGenerator.genFailResult("缺少参数：fieldMap");
+		if("process".equals(pushType)){//审批流程消息
+			String uasUrl=  JSON.parseObject(urlParam).getString("url");//"https://demo.usoftchina.com:9443/uas/";
+			String uasPhone= JSON.parseObject(urlParam).getString("phone");//"13510107574";
+			String uasPassword= JSON.parseObject(urlParam).getString("password");//"a1111111";
+			String uasMaster=JSON.parseObject(urlParam).getString("master");//"UAS";
+			Integer nodeId=JSON.parseObject(urlParam).getInteger("nodeId");//59490196;
+			try {
+				uasUrl=URLEncoder.encode(uasUrl, "utf-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			String jsonParam="{\"phone\":\""+uasPhone+"\",\"password\":\""+uasPassword+"\",\"master\":\""+uasMaster+"\",\"nodeId\":"+nodeId+",\"baseUrl\":\""+uasUrl+"\"}";
+			try {
+				jsonParam=URLEncoder.encode(jsonParam, "utf-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			url="https://www.akuiguoshu.com/wxService/approval/"+jsonParam;
 		}
-		if (StringUtils.isEmpty(url)) {
-			return ResultGenerator.genFailResult("缺少参数：url");
+		if ("subscribe".equals(pushType)) {//订阅消息
+			//http://218.18.115.198:8888/ERP/common/charts/mobileCharts.action?numId=3665&mainId=14356&insId=270855&title=昨日工作日报统计&sessionId=647568D88B15DE9EC4032266265969A5
+			try {
+				String uasphone=JSON.parseObject(urlParam).getString("phone");
+				String password=JSON.parseObject(urlParam).getString("password");
+				String master=JSON.parseObject(urlParam).getString("master");
+				Integer numId=JSON.parseObject(urlParam).getInteger("numId");
+				Integer mainId=JSON.parseObject(urlParam).getInteger("mainId");
+				Integer insId=JSON.parseObject(urlParam).getInteger("insId");
+				String title=JSON.parseObject(urlParam).getString("title");
+				String sessionId=JSON.parseObject(urlParam).getString("sessionId");
+				url=url+"?numId="+numId+"&mainId="+mainId+"&insId="+insId+"&title="+title+"&sessionId="+sessionId+"&phone="+uasphone+"&password="+password+"&master="+master;
+			} catch (Exception e) {
+			     e.printStackTrace();
+			}
 		}
-		if(StringUtils.isEmpty(urlParam)){
-			return ResultGenerator.genFailResult("缺少参数：urlParam");
+		if("message".equals(pushType)){//消息推送消息
+			String uasphone=JSON.parseObject(urlParam).getString("phone");
+			String password=JSON.parseObject(urlParam).getString("password");
+			String master=JSON.parseObject(urlParam).getString("master");
+			Integer id=JSON.parseObject(urlParam).getInteger("id");
+			String sessionId=JSON.parseObject(urlParam).getString("sessionId");
+			url=url+"?id="+id+"&sessionId="+sessionId+"&phone="+uasphone+"&password="+password+"&master="+master;
 		}
 		
-		String uasUrl=  JSON.parseObject(urlParam).getString("url");//"https://demo.usoftchina.com:9443/uas/";
-		String uasPhone= JSON.parseObject(urlParam).getString("phone");//"13510107574";
-		String uasPassword= JSON.parseObject(urlParam).getString("password");//"a1111111";
-		String uasMaster=JSON.parseObject(urlParam).getString("master");//"UAS";
-		Integer nodeId=JSON.parseObject(urlParam).getInteger("nodeId");//59490196;
-		try {
-			uasUrl=URLEncoder.encode(uasUrl, "utf-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		String jsonParam="{\"phone\":\""+uasPhone+"\",\"password\":\""+uasPassword+"\",\"master\":\""+uasMaster+"\",\"nodeId\":"+nodeId+",\"baseUrl\":\""+uasUrl+"\"}";
-		try {
-			jsonParam=URLEncoder.encode(jsonParam, "utf-8");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		url="https://www.akuiguoshu.com/wxService/approval/"+jsonParam;
 		
 //		String 	url="http://www.aliyunyh.com/480.html";
 //		String fieldMap="{\"title\":\"UAS流程审批提醒\",\"time\":\"2018年10月16日星期二 14:56\",\"content\":\"陈虎的员工转正申请单等待您的审批！\"}";
@@ -157,6 +203,7 @@ public class WeiXinPushController {
 		String title=JSON.parseObject(fieldMap).getString("title");
 		String time=JSON.parseObject(fieldMap).getString("time");
 		String content=JSON.parseObject(fieldMap).getString("content");
+		
 		String json="{\"touser\":\""+openid+"\","
 				+ "\"template_id\":\"siCbcBD_czFdqQpgs0q-PTboFg-SjaUpDadPEqzdpJc\","
 				+ "\"url\":\""+""+url+""+"\","
@@ -176,7 +223,8 @@ public class WeiXinPushController {
         String result= hRequest.body();
    
         if(JSON.parseObject(result).getInteger("errcode")==0&&JSON.parseObject(result).getString("errmsg").equals("ok")){
-        	return ResultGenerator.genSuccessResult("推送成功！").setData(result);
+        	String successStr="推送成功!"+"url:"+url+" pushType:"+pushType;
+        	return ResultGenerator.genSuccessResult(successStr).setData(result);
         }else{
         	return ResultGenerator.genFailResult("推送失败！access_token:"+access_token+" token:"+token).setData(result);        	
         }
@@ -214,10 +262,10 @@ public class WeiXinPushController {
 	}
 	
 //	public static void main(String[] args) {
-////		 HttpRequest jRequest=  HttpRequest.get("https://mobile.ubtob.com/user/appGetOpenid")
-////				 .form("telephone", "13510107573");
-////		 String jresult= jRequest.body();
-////		 System.out.println(""+jresult);
+//		 HttpRequest jRequest=  HttpRequest.get("https://mobile.ubtob.com/user/appGetOpenid")
+//				 .form("telephone", "13430818775");
+//		 String jresult= jRequest.body();
+//		 System.out.println(""+jresult);
 ////		 
 ////		 HttpRequest hRequest=HttpRequest.get("https://mobile.ubtob.com/user/appWecharId")
 ////				 .form("telephone", "13510107573")
