@@ -32,6 +32,37 @@ public class WeiXinPushController {
 	private static final String  AppSecret ="cadf13c4e21c2c122cb2341b341e5c22";
 	
 	
+	//http://www.akuiguoshu.com/smart-school/bindMenu/
+	
+	@RequestMapping(value="/wxBinds")
+	public ModelAndView wxBinds(HttpServletRequest request) {
+		
+		return  new ModelAndView("redirect:http://www.akuiguoshu.com/smart-school/bindMenu/1231223");
+		
+	}
+	
+	
+	/**
+	 * 绑定手机号码与微信公众号OpenId
+	 * @param request
+	 * @return
+	 */
+//	@RequestMapping(value="/wxlogin")
+//	public ModelAndView wxlogin(HttpServletRequest request) {
+//		String code=request.getParameter("code");
+//		HashMap<String, Object> params=new HashMap<>();
+//		params.put("appid", APPID);
+//		params.put("secret", AppSecret);
+//		params.put("code", code);
+//		params.put("grant_type", "authorization_code");
+//		HttpRequest response= HttpRequest.get("https://api.weixin.qq.com/sns/oauth2/access_token", params, true);
+//        String result=response.body();
+//		String openid=JSON.parseObject(result).getString("openid");
+//		
+//		return  new ModelAndView("redirect:http://www.akuiguoshu.com/smart-school/bindMenu/1231223");
+//	
+//	}
+	
 	/**
 	 * 绑定手机号码与微信公众号OpenId
 	 * @param request
@@ -66,7 +97,7 @@ public class WeiXinPushController {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-			return  new ModelAndView("redirect:bindResult/:"+resultParams);
+			return  new ModelAndView("redirect:bindResult/"+resultParams);
 		}else{
 			String resultParams="手机号码 "+phone+" 绑定失败!您的openid是"+openid;
 			try {
@@ -169,7 +200,7 @@ public class WeiXinPushController {
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
 			}
-			url="https://www.akuiguoshu.com/wxService/approval/"+jsonParam;
+			url="http://www.akuiguoshu.com/wxService/approval/"+jsonParam;
 		}
 		if ("subscribe".equals(pushType)) {//订阅消息
 			//http://218.18.115.198:8888/ERP/common/charts/mobileCharts.action?numId=3665&mainId=14356&insId=270855&title=昨日工作日报统计&sessionId=647568D88B15DE9EC4032266265969A5

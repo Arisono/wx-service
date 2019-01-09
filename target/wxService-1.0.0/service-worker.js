@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/smart-school/precache-manifest.7ea67ac82f90e11822bde0ed721583e8.js"
+  "/smart-school/precache-manifest.3c57aeb4cd646ff87c01bf5c045abc1b.js"
 );
 
 workbox.clientsClaim();

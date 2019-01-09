@@ -2,6 +2,7 @@ package com.arison.app.web;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,5 +17,10 @@ public class IndexController {
 		  return model;  
 	}
 	
+	@RequestMapping(value = "/json", method = RequestMethod.GET)
+	public  String json(HttpServletRequest request) {
+		  String model="json";
+		  return model;  
+	}
 	
 }
