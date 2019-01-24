@@ -4,11 +4,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.arison</groupId>
-	<artifactId>wxService</artifactId>
 	<version>1.0.0</version>
 	<packaging>war</packaging>
 
-	<name>wxService</name>
 	<description>The first Spring Boot project</description>
 
 	<parent>
@@ -120,4 +118,6 @@
 		</plugins>
 		<defaultGoal>compile</defaultGoal>
 	</build>
+	<name>smart-school</name>
+	<artifactId>smart-school</artifactId>
 </project>

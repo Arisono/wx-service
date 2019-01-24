@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Implementation-Title: wxService
+Implementation-Title: smart-school
 Implementation-Version: 1.0.0
 Built-By: Arison
 Implementation-Vendor-Id: com.arison
